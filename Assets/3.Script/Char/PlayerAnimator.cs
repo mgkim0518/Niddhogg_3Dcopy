@@ -8,6 +8,8 @@ public class PlayerAnimator : NetworkBehaviour
     [SerializeField] Animator animator;
     [SerializeField] NetworkAnimator netAnimator;
 
+    [SerializeField] float moveDamp = 0.2f;
+
     static readonly int MoveXHash = Animator.StringToHash("MoveX");
     static readonly int MoveZHash = Animator.StringToHash("MoveZ");
     static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -38,12 +40,12 @@ public class PlayerAnimator : NetworkBehaviour
         health.OnDeadChanged -= SetDead;
     }
 
-    public void SetMove(Vector3 localVelocity, float animSpeed, bool grounded, bool falling)
+    public void SetMove(Vector3 blend, float animSpeed, bool grounded, bool falling)
     {
-        animator.SetFloat(MoveXHash, localVelocity.x, 0.1f, Time.deltaTime);
-        animator.SetFloat(MoveZHash, localVelocity.z, 0.1f, Time.deltaTime);
-        animator.SetFloat(SpeedHash, localVelocity.magnitude, 0.1f, Time.deltaTime);
-        animator.SetFloat(MoveAnimSpeedHash, animSpeed);
+        animator.SetFloat(MoveXHash, blend.x, moveDamp, Time.deltaTime);
+        animator.SetFloat(MoveZHash, blend.z, moveDamp, Time.deltaTime);
+        animator.SetFloat(SpeedHash, blend.magnitude, moveDamp, Time.deltaTime);
+        animator.SetFloat(MoveAnimSpeedHash, animSpeed, moveDamp, Time.deltaTime);
         animator.SetBool(GroundedHash, grounded);
         animator.SetBool(FreeFallHash, falling);
         if (grounded) animator.SetBool(JumpHash, false);
