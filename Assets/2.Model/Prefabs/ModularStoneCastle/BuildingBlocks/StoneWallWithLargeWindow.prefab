@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 423156}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneWallWithLargeWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3369348}
   - component: {fileID: 2374880}
   - component: {fileID: 6477636}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

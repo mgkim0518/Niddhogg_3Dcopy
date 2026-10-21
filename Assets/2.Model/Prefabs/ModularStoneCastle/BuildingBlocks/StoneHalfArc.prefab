@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3309294}
   - component: {fileID: 2392546}
   - component: {fileID: 6449552}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 497166}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneHalfArc
   m_TagString: Untagged
   m_Icon: {fileID: 0}

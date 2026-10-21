@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 469462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StonePassageDoorBothSides
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3302784}
   - component: {fileID: 2390564}
   - component: {fileID: 6422358}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube3
   m_TagString: Untagged
   m_Icon: {fileID: 0}

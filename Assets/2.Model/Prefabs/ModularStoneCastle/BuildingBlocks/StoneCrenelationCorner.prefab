@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3349258}
   - component: {fileID: 2376768}
   - component: {fileID: 6483682}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneCrenelation:pCube6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 488462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneCrenelationCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

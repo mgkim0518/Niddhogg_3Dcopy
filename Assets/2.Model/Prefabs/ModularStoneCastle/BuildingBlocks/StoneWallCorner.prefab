@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3334534}
   - component: {fileID: 2321178}
   - component: {fileID: 6499714}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 443782}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneWallCorner
   m_TagString: Untagged
   m_Icon: {fileID: 0}

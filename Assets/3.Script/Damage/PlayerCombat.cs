@@ -47,7 +47,7 @@ public class PlayerCombat : NetworkBehaviour
     private Transform cam;
     private Health health;
     private double nextAttackTime;                  // 서버 기준 쿨다운
-    private float clientNextTime;                   // 클라 쿨다운: 쿨다운 중엔 Command 자체를 안 보냄
+    private float clientNextTime;                   // 클라이언트 쿨다운
     private bool lastSentBlock;
     private readonly Collider[] overlapBuffer = new Collider[16];
     private readonly HashSet<IDamagable> hitThisSwing = new HashSet<IDamagable>();

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3327490}
   - component: {fileID: 2309332}
   - component: {fileID: 6451974}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 454688}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneWallSewage
   m_TagString: Untagged
   m_Icon: {fileID: 0}

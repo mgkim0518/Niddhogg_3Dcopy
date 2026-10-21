@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3328898}
   - component: {fileID: 2368130}
   - component: {fileID: 6430282}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 441508}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneSmallStairs 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

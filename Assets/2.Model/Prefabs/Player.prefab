@@ -561,9 +561,13 @@ MonoBehaviour:
   sensitivity: 0.6
   minPitch: -80
   maxPitch: 80
-  walkSpeed: 1.7
-  runSpeed: 3.4
-  jumpHeight: 2
+  walkSpeed: 5
+  runSpeed: 7.5
+  minAnimMul: 0.8
+  maxAnimMul: 3
+  walkClipSpeed: 1.6
+  runClipSpeed: 2.4
+  jumpHeight: 1.2
   gravity: -20
 --- !u!114 &-5398260776672305015
 MonoBehaviour:

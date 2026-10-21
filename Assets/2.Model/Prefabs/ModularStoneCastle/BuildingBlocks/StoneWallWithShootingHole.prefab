@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3309912}
   - component: {fileID: 2368196}
   - component: {fileID: 6485678}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 482074}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StoneWallWithShootingHole
   m_TagString: Untagged
   m_Icon: {fileID: 0}

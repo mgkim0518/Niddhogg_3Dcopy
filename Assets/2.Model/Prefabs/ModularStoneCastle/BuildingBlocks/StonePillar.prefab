@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3398152}
   - component: {fileID: 2384286}
   - component: {fileID: 6461368}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: pCube5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,7 +121,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 424926}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: StonePillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
