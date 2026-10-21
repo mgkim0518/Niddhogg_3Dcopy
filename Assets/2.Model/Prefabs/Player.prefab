@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: -3557515393093859424}
   - component: {fileID: -4613524974159103888}
   - component: {fileID: 2970995356751647135}
+  - component: {fileID: 5020856116243320406}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -614,7 +615,6 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
-  netAnimator: {fileID: 5404746075195465383}
   hitMask:
     serializedVersion: 2
     m_Bits: 448
@@ -631,8 +631,6 @@ MonoBehaviour:
   fistCooldown: 0.4
   thrustCooldown: 0.5
   slashCooldown: 0.7
-  thrustTrigger: Thrust
-  slashTrigger: 
   drawDebugRays: 1
   held: 1
   isHavingShield: 0
@@ -657,6 +655,23 @@ MonoBehaviour:
   teleportLead: 0.3
   hideForOthers: []
   hideForSelf: []
+--- !u!114 &5020856116243320406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627640176267713586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a846b10472895804498a64316fa68aa7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimator
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  animator: {fileID: 1865194688077506925}
+  netAnimator: {fileID: 5404746075195465383}
 --- !u!1 &1651462801253272423
 GameObject:
   m_ObjectHideFlags: 0

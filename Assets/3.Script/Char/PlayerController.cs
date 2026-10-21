@@ -94,7 +94,8 @@ public class PlayerController : NetworkBehaviour
 
         controller.Move((horizontal + Vector3.up * vertical) * Time.deltaTime);
         bool grounded = controller.isGrounded;
-        anim.SetMove(transform.InverseTransformDirection(horizontal),
+        float animMul = Mathf.Clamp(horizontal.magnitude / clipSpeed, minAnimMul, maxAnimMul);
+        anim.SetMove(transform.InverseTransformDirection(horizontal), animMul,
                      grounded, !grounded && verticalVelocity < 0f);
     }
 

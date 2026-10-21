@@ -14,6 +14,7 @@ public class PlayerAnimator : NetworkBehaviour
     static readonly int GroundedHash = Animator.StringToHash("Grounded");
     static readonly int FreeFallHash = Animator.StringToHash("FreeFall");
     static readonly int JumpHash = Animator.StringToHash("Jump");
+    static readonly int MoveAnimSpeedHash = Animator.StringToHash("MoveAnimSpeed");
     static readonly int ThrustHash = Animator.StringToHash("Thrust");
     static readonly int SlashHash = Animator.StringToHash("Slash");
     static readonly int DeadHash = Animator.StringToHash("Dead");
@@ -37,11 +38,12 @@ public class PlayerAnimator : NetworkBehaviour
         health.OnDeadChanged -= SetDead;
     }
 
-    public void SetMove(Vector3 localVelocity, bool grounded, bool falling)
+    public void SetMove(Vector3 localVelocity, float animSpeed, bool grounded, bool falling)
     {
         animator.SetFloat(MoveXHash, localVelocity.x, 0.1f, Time.deltaTime);
         animator.SetFloat(MoveZHash, localVelocity.z, 0.1f, Time.deltaTime);
         animator.SetFloat(SpeedHash, localVelocity.magnitude, 0.1f, Time.deltaTime);
+        animator.SetFloat(MoveAnimSpeedHash, animSpeed);
         animator.SetBool(GroundedHash, grounded);
         animator.SetBool(FreeFallHash, falling);
         if (grounded) animator.SetBool(JumpHash, false);
