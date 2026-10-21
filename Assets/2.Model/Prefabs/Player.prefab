@@ -441,7 +441,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 40db3173a05ae3242b1c182a09b0a183, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0
@@ -565,7 +565,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 7.5
   minAnimMul: 0.8
-  maxAnimMul: 3
+  maxAnimMul: 1.8
   walkClipSpeed: 1.6
   runClipSpeed: 2.4
   jumpHeight: 1.2
@@ -672,6 +672,7 @@ MonoBehaviour:
   syncInterval: 0
   animator: {fileID: 1865194688077506925}
   netAnimator: {fileID: 5404746075195465383}
+  moveDamp: 0.2
 --- !u!1 &1651462801253272423
 GameObject:
   m_ObjectHideFlags: 0

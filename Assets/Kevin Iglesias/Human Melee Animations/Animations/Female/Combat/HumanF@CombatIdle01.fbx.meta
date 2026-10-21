@@ -16,6 +16,8 @@ ModelImporter:
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
     animationImportErrors: 
     animationImportWarnings: 
     animationRetargetingWarnings: 
@@ -966,8 +968,8 @@ ModelImporter:
   assetBundleVariant: 
 AssetOrigin:
   serializedVersion: 1
-  productId: 151650
-  packageName: Human Melee Animations
-  packageVersion: 2.1
-  assetPath: Assets/Kevin Iglesias/Human Animations/Animations/Female/Combat/HumanF@CombatIdle01.fbx
-  uploadId: 937378
+  productId: 345572
+  packageName: Human Throwing Animations FREE
+  packageVersion: 1.0
+  assetPath: Assets/Kevin Iglesias/Human Melee Animations/Animations/Female/Combat/HumanF@CombatIdle01.fbx
+  uploadId: 825318

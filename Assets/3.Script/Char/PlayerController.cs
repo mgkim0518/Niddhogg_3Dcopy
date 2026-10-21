@@ -14,7 +14,7 @@ public class PlayerController : NetworkBehaviour
     [Header("Move")]
     [SerializeField] private float walkSpeed = 5f;
     [SerializeField] private float runSpeed = 7.5f;
-    [SerializeField] private float minAnimMul = 0.8f, maxAnimMul = 3f;
+    [SerializeField] private float minAnimMul = 0.8f, maxAnimMul = 1.3f;
     [SerializeField] private float walkClipSpeed = 1.6f, runClipSpeed = 2.4f;
 
     [Header("Jump")]
@@ -101,8 +101,7 @@ public class PlayerController : NetworkBehaviour
         ? Mathf.Clamp(speed / clipSpeed, minAnimMul, maxAnimMul)
         : 1f;
 
-        anim.SetMove(transform.InverseTransformDirection(horizontal), animMul,
-                     grounded, !grounded && verticalVelocity < 0f);
+        anim.SetMove(blend, animMul, grounded, !grounded && verticalVelocity < 0f);
     }
 
     public void Jump()
