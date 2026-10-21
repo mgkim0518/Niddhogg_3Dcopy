@@ -23,7 +23,7 @@ public class PlayerController : NetworkBehaviour
 
     private PlayerInputManager playerinput;
     private CharacterController controller;
-    private Animator animator;
+    private PlayerAnimator anim;
     private Health health;
 
     
@@ -31,18 +31,10 @@ public class PlayerController : NetworkBehaviour
     private float verticalVelocity;
     private bool jumpRequested;
 
-    private static readonly int MoveXHash = Animator.StringToHash("MoveX");
-    private static readonly int MoveZHash = Animator.StringToHash("MoveZ");
-    private static readonly int GroundedHash = Animator.StringToHash("Grounded");
-    private static readonly int JumpHash = Animator.StringToHash("Jump");
-    private static readonly int FreeFallHash = Animator.StringToHash("FreeFall");
-    private static readonly int SpeedHash = Animator.StringToHash("Speed");
-    private static readonly int MoveAnimSpeedHash = Animator.StringToHash("MoveAnimSpeed");
-
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
-        animator = GetComponent<Animator>();
+        anim = GetComponent<PlayerAnimator>();
         health = GetComponent<Health>();
     }
 
@@ -101,7 +93,9 @@ public class PlayerController : NetworkBehaviour
         float vertical = ApplyGravityAndJump();
 
         controller.Move((horizontal + Vector3.up * vertical) * Time.deltaTime);
-        UpdateAnimator(dir, speed, clipSpeed);
+        bool grounded = controller.isGrounded;
+        anim.SetMove(transform.InverseTransformDirection(horizontal),
+                     grounded, !grounded && verticalVelocity < 0f);
     }
 
     public void Jump()
@@ -119,7 +113,7 @@ public class PlayerController : NetworkBehaviour
             if (controller.isGrounded)
             {
                 verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-                animator.SetBool(JumpHash, true);
+                anim.PlayJump();
             }
             jumpRequested = false;
         }
@@ -127,20 +121,4 @@ public class PlayerController : NetworkBehaviour
         verticalVelocity += gravity * Time.deltaTime;
         return verticalVelocity;
     }
-    private void UpdateAnimator(Vector3 dir, float speed, float clipSpeed)
-    {
-        Vector3 local = transform.InverseTransformDirection(dir) * clipSpeed;
-        animator.SetFloat(MoveXHash, local.x, 0.1f, Time.deltaTime);
-        animator.SetFloat(MoveZHash, local.z, 0.1f, Time.deltaTime);
-        animator.SetFloat(SpeedHash, dir.magnitude * clipSpeed, 0.1f, Time.deltaTime);
-
-        float mul = dir.sqrMagnitude > 0.01f ? speed / clipSpeed : 1f;
-        animator.SetFloat(MoveAnimSpeedHash, Mathf.Clamp(mul, minAnimMul, maxAnimMul), 0.1f, Time.deltaTime);
-
-        bool grounded = controller.isGrounded;
-        animator.SetBool(GroundedHash, grounded);
-        animator.SetBool(FreeFallHash, !grounded && verticalVelocity < 0f);
-        if (grounded) animator.SetBool(JumpHash, false);
-    }
-
 }

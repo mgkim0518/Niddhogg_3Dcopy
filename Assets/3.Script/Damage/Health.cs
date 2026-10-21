@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,12 +8,12 @@ public class Health : NetworkBehaviour, IDamagable
 {
     [SyncVar(hook = nameof(OnHpChanged))] int hp = DamageTable.PlayerMaxHp;
     [SyncVar(hook = nameof(OnInvincibleChanged))] public bool invincible;
-    [SyncVar] public bool isDead;
+    [SyncVar(hook = nameof(OnDeadHook))] public bool isDead;
     [SyncVar] public Team team;
 
     public int HP => hp;
-    public event Action<DamageInfo> OnDied;   // ¼­¹ö¿¡¼­¸¸ ¹ß»ı
-    public event Action<bool> OnDeadChanged;     // ¸ğµç Å¬¶óÀÌ¾ğÆ®(È£½ºÆ® Æ÷ÇÔ)¿¡¼­ ¹ß»ı
+    public event Action<DamageInfo> OnDied;   // ì„œë²„ì—ì„œë§Œ ë°œìƒ
+    public event Action<bool> OnDeadChanged;     // ëª¨ë“  í´ë¼ì´ì–¸íŠ¸(í˜¸ìŠ¤íŠ¸ í¬í•¨)ì—ì„œ ë°œìƒ
 
     [Server]
     public void TakeDamage(DamageInfo info)
@@ -43,21 +43,22 @@ public class Health : NetworkBehaviour, IDamagable
 
     private bool isBlock(DamageInfo info) 
     { 
-        /* ¹æÆĞ µé°í Q ´©¸£´Â Áß + Á¤¸é °¢µµ¸é true */ 
+        /* ë°©íŒ¨ ë“¤ê³  Q ëˆ„ë¥´ëŠ” ì¤‘ + ì •ë©´ ê°ë„ë©´ true */ 
         return false; 
     }
 
     private void OnHpChanged(int oldV, int newV) 
     { 
-        /* ·ÎÄÃ ÇÃ·¹ÀÌ¾î¸é Ã¼·Â¹Ù °»½Å */ 
+        /* ë¡œì»¬ í”Œë ˆì´ì–´ë©´ ì²´ë ¥ë°” ê°±ì‹  */ 
     }
     private void OnInvincibleChanged(bool o, bool n) 
     { 
-        /* ¹İÅõ¸í ¸ÓÆ¼¸®¾ó on/off */ 
+        /* ë°˜íˆ¬ëª… ë¨¸í‹°ë¦¬ì–¼ on/off */ 
     }
 
     private void OnDeadHook(bool o, bool n)
     {
+        Debug.Log($"[{(isServer ? "ì„œë²„" : "í´ë¼")}] {name} isDead: {o} â†’ {n}");
         OnDeadChanged?.Invoke(n);
     }
 }

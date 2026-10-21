@@ -5,9 +5,6 @@ using Mirror;
 
 public class PlayerCombat : NetworkBehaviour
 {
-    [Header("참조")]
-    [SerializeField] NetworkAnimator netAnimator;   // (PlayerAttack에서) 공격 애니메이션 동기화
-
     [Header("판정")]
     [Tooltip("맞을 수 있는 것 + 공격을 막는 것: Player, Core, 벽 레이어")]
     [SerializeField] LayerMask hitMask;
@@ -29,10 +26,6 @@ public class PlayerCombat : NetworkBehaviour
     [SerializeField] float thrustCooldown = 0.5f;
     [SerializeField] float slashCooldown = 0.7f;
 
-    [Header("애니메이터 트리거 (비워두면 호출 안 함)")]
-    [SerializeField] string thrustTrigger = "Thrust";
-    [SerializeField] string slashTrigger = "";
-
     [Header("디버그")]
     [SerializeField] bool drawDebugRays = true;    
 
@@ -46,6 +39,7 @@ public class PlayerCombat : NetworkBehaviour
     private PlayerInputManager input;
     private Transform cam;
     private Health health;
+    private PlayerAnimator anim;
     private double nextAttackTime;                  // 서버 기준 쿨다운
     private float clientNextTime;                   // 클라이언트 쿨다운
     private bool lastSentBlock;
@@ -55,6 +49,7 @@ public class PlayerCombat : NetworkBehaviour
     void Awake()
     {
         health = GetComponent<Health>();
+        anim = GetComponent<PlayerAnimator>();
     }
 
     public override void OnStartLocalPlayer()
@@ -97,6 +92,7 @@ public class PlayerCombat : NetworkBehaviour
             {
                 AttackKind k = held == HeldWeapon.None ? AttackKind.Thrust : kind.Value;
                 clientNextTime = Time.time + Cooldown(k);
+                anim.PlayAttack(k);
                 CmdAttack(kind.Value, cam.forward);
             }
         }
@@ -140,7 +136,6 @@ public class PlayerCombat : NetworkBehaviour
 
         nextAttackTime = NetworkTime.time + Cooldown(kind);
 
-        PlayAnimation(kind);
         RpcPlayAttack(kind, held);
         StartCoroutine(HitAfterDelay(kind, dir));
     }
@@ -238,12 +233,6 @@ public class PlayerCombat : NetworkBehaviour
     }
 
     [Server]
-    private void PlayAnimation(AttackKind kind)
-    {
-        if (netAnimator == null) return;
-        string trigger = kind == AttackKind.Thrust ? thrustTrigger : slashTrigger;
-        if (!string.IsNullOrEmpty(trigger)) netAnimator.SetTrigger(trigger);
-    }
 
     [ClientRpc]
     void RpcPlayAttack(AttackKind kind, HeldWeapon weapon)
