@@ -1228,15 +1228,17 @@ MonoBehaviour:
   syncInterval: 0
   door: {fileID: 3601691074781444766}
   doorZone: {fileID: 5174724664050417714}
-  buttons: []
-  openHeight: 3
+  buttons:
+  - {fileID: 7869137489577373196}
+  - {fileID: 2216293366705449351}
+  openHeight: 5
   openSpeed: 4
   closeSpeed: 2
-  openDuration: 10
+  openDuration: 3
   blockedRetryDelay: 1
   playerMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
 --- !u!1001 &48404722706340239
 PrefabInstance:
   m_ObjectHideFlags: 0

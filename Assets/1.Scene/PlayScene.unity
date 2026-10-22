@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputManager
   input_l: {fileID: 97694990}
-  gameplayMap: Player
+  gameplayMap: PlayerControls
   Target: {fileID: 0}
 --- !u!1 &202081718
 GameObject:
