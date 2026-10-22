@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 1641300126761923713}
   - component: {fileID: 4520895032286792472}
   - component: {fileID: 7831543854864878604}
-  m_Layer: 0
+  - component: {fileID: 5386968114203790079}
+  m_Layer: 8
   m_Name: Runestone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,6 +90,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5386968114203790079
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5837721077365790572}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.08173092, y: 0.008929775, z: 0.08093041}
+  m_Center: {x: -0.00015870295, y: 0.0043822634, z: -0.00003717281}
 --- !u!1 &6647059570128500483
 GameObject:
   m_ObjectHideFlags: 0
@@ -99,7 +121,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4442404599687335742}
   - component: {fileID: 7000662426343137015}
-  m_Layer: 0
+  - component: {fileID: 4229243813083205429}
+  m_Layer: 7
   m_Name: Core
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,10 +159,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
   sceneId: 0
-  _assetId: 255923242
+  _assetId: 3441651128
   serverOnly: 0
   visibility: 0
   hasSpawned: 0
+--- !u!114 &4229243813083205429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6647059570128500483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4138b97bf9a1a414a932ac73168341b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Core
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  team: 0
+  alertInterval: 3
 --- !u!1 &8411766412652171207
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,7 +191,8 @@ GameObject:
   - component: {fileID: 1631946028075089553}
   - component: {fileID: 3489578420087768872}
   - component: {fileID: 1809517673151571448}
-  m_Layer: 0
+  - component: {fileID: 2901598745237209218}
+  m_Layer: 7
   m_Name: Cristal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,3 +270,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2901598745237209218
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8411766412652171207}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.033, y: 0.05, z: 0.033}
+  m_Center: {x: 0, y: 0.045, z: 0}

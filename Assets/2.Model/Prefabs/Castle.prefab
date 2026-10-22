@@ -1234,7 +1234,7 @@ MonoBehaviour:
   openHeight: 5
   openSpeed: 4
   closeSpeed: 2
-  openDuration: 3
+  openDuration: 10
   blockedRetryDelay: 1
   playerMask:
     serializedVersion: 2
@@ -4325,33 +4325,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5837721077365790572, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 6647059570128500483, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
       propertyPath: m_Name
-      value: Core_Red
-      objectReference: {fileID: 0}
-    - target: {fileID: 6647059570128500483, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 6647059570128500483, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7000662426343137015, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
-      propertyPath: sceneId
-      value: 0
+      value: Core
       objectReference: {fileID: 0}
     - target: {fileID: 7000662426343137015, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
       propertyPath: _assetId
       value: 3441651128
-      objectReference: {fileID: 0}
-    - target: {fileID: 8411766412652171207, guid: 14f367d97714e5c4f84d20cf1f495631, type: 3}
-      propertyPath: m_Layer
-      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
