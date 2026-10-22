@@ -5,32 +5,31 @@ using Mirror;
 
 public class PlayerCombat : NetworkBehaviour
 {
-    [Header("ÆÇÁ¤")]
-    [Tooltip("¸ÂÀ» ¼ö ÀÖ´Â °Í + °ø°İÀ» ¸·´Â °Í: Player, Core, º® ·¹ÀÌ¾î")]
+    [Header("íŒì •")]
+    [Tooltip("ë§ì„ ìˆ˜ ìˆëŠ” ê²ƒ + ê³µê²©ì„ ë§‰ëŠ” ê²ƒ: Player, Core, ë²½ ë ˆì´ì–´")]
     [SerializeField] LayerMask hitMask;
-    [Tooltip("º£±â°¡ º® ³Ê¸Ó·Î µé¾î°¡Áö ¾Ê°Ô ¸·´Â ·¹ÀÌ¾î: º®, ¹Ù´Ú")]
+    [Tooltip("ë² ê¸°ê°€ ë²½ ë„ˆë¨¸ë¡œ ë“¤ì–´ê°€ì§€ ì•Šê²Œ ë§‰ëŠ” ë ˆì´ì–´: ë²½, ë°”ë‹¥")]
     [SerializeField] LayerMask obstacleMask;
     [SerializeField] float eyeHeight = 1.67f;
     [SerializeField] float thrustRadius = 0.2f;
     [SerializeField] float slashAngle = 100f;
-    [Tooltip("(PlayerAttack¿¡¼­) ÈÖµÎ¸£±â ½ÃÀÛ ÈÄ ½ÇÁ¦·Î ¸Â´Â ½ÃÁ¡±îÁöÀÇ Áö¿¬. ¾Ö´Ï¸ŞÀÌ¼Ç Å¸°İ ÇÁ·¹ÀÓ¿¡ ¸ÂÃá´Ù")]
+    [Tooltip("(PlayerAttackì—ì„œ) íœ˜ë‘ë¥´ê¸° ì‹œì‘ í›„ ì‹¤ì œë¡œ ë§ëŠ” ì‹œì ê¹Œì§€ì˜ ì§€ì—°. ì• ë‹ˆë©”ì´ì…˜ íƒ€ê²© í”„ë ˆì„ì— ë§ì¶˜ë‹¤")]
     [SerializeField] float hitDelay = 0.15f;
 
-    [Header("»ç°Å¸®")]
+    [Header("ì‚¬ê±°ë¦¬")]
     [SerializeField] float fistRange = 1.2f;
     [SerializeField] float swordRange = 2f;
     [SerializeField] float greatSwordRange = 3f;
 
-    [Header("Äğ´Ù¿î(ÃÊ)")]
+    [Header("ì¿¨ë‹¤ìš´(ì´ˆ)")]
     [SerializeField] float fistCooldown = 0.4f;
     [SerializeField] float thrustCooldown = 0.5f;
     [SerializeField] float slashCooldown = 0.7f;
 
-    [Header("µğ¹ö±×")]
-    [SerializeField] bool drawDebugRays = true;    
+    [Header("ë””ë²„ê·¸")]
+    [SerializeField] bool drawDebugRays = true;
 
-    // ¿À´Ã ¿ÀÈÄ ÇÈ¾÷¡¤´øÁö±â ÀÛ¾÷¿¡¼­ ¼­¹ö°¡ ¹Ù²ãÁÙ °ªµé
-    [SyncVar] public HeldWeapon held = HeldWeapon.Sword;
+    [SyncVar(hook = nameof(OnHeldChanged))] public HeldWeapon held = HeldWeapon.Sword;
     [SyncVar] public bool isHavingShield;
     [SyncVar] public bool isBlocking;
 
@@ -40,8 +39,8 @@ public class PlayerCombat : NetworkBehaviour
     private Transform cam;
     private Health health;
     private PlayerAnimator anim;
-    private double nextAttackTime;                  // ¼­¹ö ±âÁØ Äğ´Ù¿î
-    private float clientNextTime;                   // Å¬¶óÀÌ¾ğÆ® Äğ´Ù¿î
+    private double nextAttackTime;                  // ì„œë²„ ê¸°ì¤€ ì¿¨ë‹¤ìš´
+    private float clientNextTime;                   // í´ë¼ì´ì–¸íŠ¸ ì¿¨ë‹¤ìš´
     private bool lastSentBlock;
     private readonly Collider[] overlapBuffer = new Collider[16];
     private readonly HashSet<IDamagable> hitThisSwing = new HashSet<IDamagable>();
@@ -92,7 +91,7 @@ public class PlayerCombat : NetworkBehaviour
             {
                 AttackKind k = held == HeldWeapon.None ? AttackKind.Thrust : kind.Value;
                 clientNextTime = Time.time + Cooldown(k);
-                anim.PlayAttack(k);
+                anim.PlayAttack(k, held);
                 CmdAttack(kind.Value, cam.forward);
             }
         }
@@ -103,6 +102,11 @@ public class PlayerCombat : NetworkBehaviour
             lastSentBlock = isCanBlock;
             CmdSetBlocking(isCanBlock);
         }
+    }
+
+    private void OnHeldChanged(HeldWeapon oldV, HeldWeapon newV)
+    {
+        anim.SetWeapon(newV);
     }
 
     [Command]
@@ -219,7 +223,7 @@ public class PlayerCombat : NetworkBehaviour
 
             if (Physics.Linecast(eye, closest, obstacleMask, QueryTriggerInteraction.Ignore))
             {
-                continue;   // º® ³Ê¸Ó
+                continue;   // ë²½ ë„ˆë¨¸
             }
 
             hitThisSwing.Add(target);
@@ -227,17 +231,16 @@ public class PlayerCombat : NetworkBehaviour
             target.TakeDamage(info);
         }
 
-        // º£±â ¹üÀ§ ¾ç ³¡ Ç¥½Ã
+        // ë² ê¸° ë²”ìœ„ ì–‘ ë í‘œì‹œ
         DrawDebug(eye, Quaternion.Euler(0, -slashAngle * 0.5f, 0) * flatDir * Range(), Color.yellow);
         DrawDebug(eye, Quaternion.Euler(0, slashAngle * 0.5f, 0) * flatDir * Range(), Color.yellow);
     }
 
-    [Server]
 
     [ClientRpc]
     void RpcPlayAttack(AttackKind kind, HeldWeapon weapon)
     {
-        // ¹Ù¶÷ ¼Ò¸® µî. ¸Â¾ÒÀ» ¶§ÀÇ ¼Ò¸®´Â HealthÀÇ hp hook¿¡¼­.
+        // ë°”ëŒ ì†Œë¦¬ ë“±. ë§ì•˜ì„ ë•Œì˜ ì†Œë¦¬ëŠ” Healthì˜ hp hookì—ì„œ.
     }
 
     private void DrawDebug(Vector3 from, Vector3 vec, Color color)
