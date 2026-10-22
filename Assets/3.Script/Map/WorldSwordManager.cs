@@ -8,11 +8,12 @@ public class WorldSwordManager : MonoBehaviour
     public static WorldSwordManager Instance;
     private void Awake()
     {
-        Instance = this;
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
+            return;
         }
+        Instance = this;
     }
 
     [SerializeField] private GameObject swordPrefab; // NetworkIdentity 필요, NetworkManager Spawnable Prefabs에 등록
@@ -49,5 +50,14 @@ public class WorldSwordManager : MonoBehaviour
         }
         NetworkServer.Destroy(sword);
         return true;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+        {
+            Instance = null;
+        }
+
     }
 }
