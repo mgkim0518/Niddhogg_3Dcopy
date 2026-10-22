@@ -84,8 +84,8 @@ public class PlayerCombat : NetworkBehaviour
         if (isCanAct && Time.time >= clientNextTime)
         {
             AttackKind? kind = null;
-            if (input.ThrustPressed) kind = AttackKind.Thrust;
-            else if (input.SlashPressed) kind = AttackKind.Slash;
+            if (input.isThrust) kind = AttackKind.Thrust;
+            else if (input.isSlash) kind = AttackKind.Slash;
 
             if (kind.HasValue)
             {
@@ -96,7 +96,7 @@ public class PlayerCombat : NetworkBehaviour
             }
         }
 
-        bool isCanBlock = isCanAct && isHavingShield && input.BlockHeld;
+        bool isCanBlock = isCanAct && isHavingShield && input.isBlocking;
         if (isCanBlock != lastSentBlock)
         {
             lastSentBlock = isCanBlock;
