@@ -404,6 +404,7 @@ GameObject:
   - component: {fileID: 2970995356751647135}
   - component: {fileID: 5020856116243320406}
   - component: {fileID: 4090427183026553262}
+  - component: {fileID: 4007394008109398797}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -696,6 +697,21 @@ MonoBehaviour:
   interactRange: 2
   serverRangeSlack: 1
   eyeHeight: 1.67
+--- !u!114 &4007394008109398797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627640176267713586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d96ea49e31456e34f87794bcaf143cc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerTeamColor
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &1651462801253272423
 GameObject:
   m_ObjectHideFlags: 0

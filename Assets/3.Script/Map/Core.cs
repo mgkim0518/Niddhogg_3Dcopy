@@ -36,7 +36,7 @@ public class Core : NetworkBehaviour, IDamagable
             Debug.LogError($"{name}: 코어 팀이 정해지지 않았습니다.");
 
         Transform c = transform.Find("Cristal");
-        crystalRenderers = GetComponentsInChildren<SkinnedMeshRenderer>(true);
+        crystalRenderers = GetComponentsInChildren<MeshRenderer>(true);
     }
 
     void ApplyColor(int currentHp)
