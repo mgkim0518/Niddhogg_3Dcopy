@@ -48,6 +48,14 @@ public class SpecialItem : NetworkBehaviour
         return_co = StartCoroutine(ReturnAfterDelay());
     }
 
+    [Server]
+    public void ReleaseForThrow()
+    {
+        StopReturn();
+        isHeld = false;
+        ApplyHeld(false);
+    }
+
     private IEnumerator ReturnAfterDelay()
     {
         yield return new WaitForSeconds(returnDelay);

@@ -679,8 +679,6 @@ MonoBehaviour:
   moveDamp: 0.2
   comboResetTime: 0.4
   leftHandIK: {fileID: 8916785483045940784}
-  leftHandIKFront: {fileID: 0}
-  gripBlendSpeed: 8
 --- !u!114 &4090427183026553262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -735,7 +733,7 @@ MonoBehaviour:
   swordModel: {fileID: 6764799080890837998}
   greatSwordModel: {fileID: 3778388083260508401}
   shieldModel: {fileID: 3490210571952390695}
-  dropHeight: 0.3
+  dropHeight: 0.02
   pickupRange: 2
   serverRangeSlack: 1
 --- !u!1 &1651462801253272423

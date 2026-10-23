@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using Mirror;
 
@@ -10,9 +11,23 @@ public class PlayerInventory : NetworkBehaviour
     [SerializeField] GameObject greatSwordModel;   // WeaponSocket/Greatsword_Held
     [SerializeField] GameObject shieldModel;       // ShieldSocket/Shield
 
+    [Header("손 위치 (던질 때 보이는 출발점)")]
+    [SerializeField] Transform weaponSocket;       
+    [SerializeField] Transform shieldSocket;       
+
+    [Header("던지기 (휠 클릭)")]
+    [SerializeField] float throwSpeed = 18f;
+    [Tooltip("크로스라인보다 살짝 위로 던져 포물선을 만든다 (도)")]
+    [SerializeField] float throwUpAngle = 4f;
+    [Tooltip("던지기 애니메이션에서 손을 놓는 시점까지의 지연")]
+    [SerializeField] float releaseDelay = 0.2f;
+    [SerializeField] float throwCooldown = 0.6f;
+    [SerializeField] float eyeHeight = 1.67f;
+    [Tooltip("눈 앞 얼마나 떨어진 곳에서 출발할지 (자기 몸에 걸리지 않게)")]
+    [SerializeField] float throwStartForward = 0.6f;
+
     [Header("규칙")]
-    [Tooltip("떨어뜨릴 때 플레이어 발밑에서 얼마나 띄울지")]
-    [SerializeField] float dropHeight = 0.3f;
+    [SerializeField] float dropHeight = 0.02f;
     [SerializeField] float pickupRange = 2f;
     [SerializeField] float serverRangeSlack = 1f;
 
@@ -24,6 +39,17 @@ public class PlayerInventory : NetworkBehaviour
 
     HeldWeapon shownHeld = (HeldWeapon)(-1);
     bool shownShield;
+
+    PlayerInputManager input;
+    Transform cam;
+    float clientNextThrow;
+
+    double serverNextThrow;
+    bool throwing;
+
+    public const int SocketWeapon = 0;
+    public const int SocketShield = 1;
+    public Transform GetSocket(int index) => index == SocketShield ? shieldSocket : weaponSocket;
 
     void Awake()
     {
@@ -176,6 +202,118 @@ public class PlayerInventory : NetworkBehaviour
     void OnRevivedServer()
     {
         combat.held = HeldWeapon.Sword;
+    }
+
+    enum ThrowChoice { None, Shield, Sword, GreatSword }
+
+    ThrowChoice ChooseThrow()
+    {
+        if (combat.isHavingShield) return ThrowChoice.Shield;
+        if (combat.held == HeldWeapon.Sword) return ThrowChoice.Sword;
+        if (combat.held == HeldWeapon.GreatSword) return ThrowChoice.GreatSword;
+        return ThrowChoice.None;
+    }
+
+    void Update()
+    {
+        if (!isLocalPlayer || input == null) return;
+        if (health.isDead || PlayerCombat.isInputBlocked) return;
+        if (!input.isThrow || Time.time < clientNextThrow) return;
+
+        ThrowChoice choice = ChooseThrow();
+        if (choice == ThrowChoice.None)
+        {
+            PlayerInteract.ShowMessage("던질 것이 없습니다");
+            return;
+        }
+
+        clientNextThrow = Time.time + throwCooldown;
+        if (anim != null) anim.PlayThrow();   // NetworkAnimator가 클라이언트 권한이라 로컬에서 보낸다
+        CmdThrow(cam.forward);
+    }
+
+    [Command]
+    void CmdThrow(Vector3 dir)
+    {
+        if (health.isDead || throwing) return;
+        if (NetworkTime.time < serverNextThrow) return;
+        if (dir.sqrMagnitude < 0.01f) return;
+        if (ChooseThrow() == ThrowChoice.None) return;
+
+        serverNextThrow = NetworkTime.time + throwCooldown;
+        StartCoroutine(ThrowAfterDelay(dir.normalized));
+    }
+
+    [Server]
+    IEnumerator ThrowAfterDelay(Vector3 dir)
+    {
+        throwing = true;
+        if (releaseDelay > 0f) yield return new WaitForSeconds(releaseDelay);
+        throwing = false;
+
+        if (health.isDead) yield break;   // 던지기 전에 죽었다 (이미 DropAll로 떨어졌다)
+
+        ThrowChoice choice = ChooseThrow();   // 지연 동안 바뀌었을 수 있어 다시 고른다
+        if (choice == ThrowChoice.None) yield break;
+
+        // 판정용 진짜 궤적: 눈 앞에서 크로스라인 방향 (살짝 위로)
+        Vector3 eye = transform.position + Vector3.up * eyeHeight;
+        Vector3 start = eye + dir * throwStartForward;
+        Vector3 right = Vector3.Cross(Vector3.up, dir);
+        Vector3 throwDir = right.sqrMagnitude > 0.0001f
+            ? Quaternion.AngleAxis(-throwUpAngle, right.normalized) * dir
+            : dir;
+        Vector3 velocity = throwDir * throwSpeed;
+
+        ThrownItem projectile = null;
+        DamageType type;
+        int socket;
+
+        switch (choice)
+        {
+            case ThrowChoice.Shield:
+                {
+                    SpecialItem shield = carriedSpecial;
+                    carriedSpecial = null;
+                    combat.isHavingShield = false;
+                    combat.isBlocking = false;
+                    if (shield == null) yield break;
+                    shield.ReleaseForThrow();
+                    projectile = shield.GetComponent<ThrownItem>();
+                    type = DamageType.ThrownShield;
+                    socket = SocketShield;
+                    break;
+                }
+            case ThrowChoice.GreatSword:
+                {
+                    SpecialItem great = carriedSpecial;
+                    carriedSpecial = null;
+                    combat.held = HeldWeapon.None;
+                    if (great == null) yield break;
+                    great.ReleaseForThrow();
+                    projectile = great.GetComponent<ThrownItem>();
+                    type = DamageType.ThrownSword;
+                    socket = SocketWeapon;
+                    break;
+                }
+            default: // Sword
+                {
+                    combat.held = HeldWeapon.None;
+                    if (WorldSwordManager.Instance == null) yield break;
+                    GameObject sword = WorldSwordManager.Instance.SpawnSword(start, Quaternion.LookRotation(dir));
+                    projectile = sword != null ? sword.GetComponent<ThrownItem>() : null;
+                    type = DamageType.ThrownSword;
+                    socket = SocketWeapon;
+                    break;
+                }
+        }
+
+        if (projectile == null)
+        {
+            Debug.LogError("던질 아이템에 ThrownItem이 없습니다.");
+            yield break;
+        }
+        projectile.Launch(start, velocity, transform, type, health.team, socket);
     }
 
     void LateUpdate()

@@ -16,15 +16,15 @@ public class WorldSwordManager : MonoBehaviour
         Instance = this;
     }
 
-    [SerializeField] private GameObject swordPrefab; // NetworkIdentity 필요, NetworkManager Spawnable Prefabs에 등록
+    [SerializeField] private GameObject swordPrefab;
     private const int MaxSwords = 20;
     private readonly List<GameObject> swords = new();
 
-    public void SpawnSword(Vector3 pos, Quaternion rot)
+    public GameObject SpawnSword(Vector3 pos, Quaternion rot)
     {
         if (!NetworkServer.active)
         {
-            return;
+            return null;
         }
 
         if (swords.Count >= MaxSwords)
@@ -40,6 +40,7 @@ public class WorldSwordManager : MonoBehaviour
         GameObject s = Instantiate(swordPrefab, pos, rot);
         NetworkServer.Spawn(s);
         swords.Add(s);
+        return s;
     }
 
     public bool TryPickUp(GameObject sword)
