@@ -543,7 +543,7 @@ CharacterController:
   m_Height: 1.8
   m_Radius: 0.28
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.7
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0.93, z: 0}
@@ -733,6 +733,14 @@ MonoBehaviour:
   swordModel: {fileID: 6764799080890837998}
   greatSwordModel: {fileID: 3778388083260508401}
   shieldModel: {fileID: 3490210571952390695}
+  weaponSocket: {fileID: 25097960350672658}
+  shieldSocket: {fileID: 5474073833363531320}
+  throwSpeed: 18
+  throwUpAngle: 4
+  releaseDelay: 0.2
+  throwCooldown: 0.6
+  eyeHeight: 1.67
+  throwStartForward: 0.6
   dropHeight: 0.02
   pickupRange: 2
   serverRangeSlack: 1
