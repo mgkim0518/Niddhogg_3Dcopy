@@ -20,6 +20,7 @@ public class PlayerInteract : NetworkBehaviour
     void Awake()
     {
         health = GetComponent<Health>();
+        inventory = GetComponent<PlayerInventory>();
     }
 
     public static void ShowMessage(string message)
