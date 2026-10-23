@@ -26,13 +26,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4049482874682720782}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.62529993, y: 0, z: -13.260854}
+  m_LocalRotation: {x: 0.10202119, y: 0.44065478, z: -0.8461314, w: -0.2819164}
+  m_LocalPosition: {x: 0.112, y: -0.11, z: -0.103}
   m_LocalScale: {x: 0.4, y: 0.40000004, z: 0.40000004}
   m_ConstrainProportionsScale: 1
-  m_Children: []
+  m_Children:
+  - {fileID: 4494435873730956889}
   m_Father: {fileID: 1869056516318208796}
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 136.514, y: 144.521, z: -51.395996}
 --- !u!33 &1524275118036585788
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -91,6 +92,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &7780017500010835365
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4494435873730956889}
+  m_Layer: 0
+  m_Name: LeftHandIK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4494435873730956889
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7780017500010835365}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0.10202128, y: -0.44065478, z: 0.8461314, w: -0.28191644}
+  m_LocalPosition: {x: -0.014, y: -0.693, z: -0.039}
+  m_LocalScale: {x: 2.4999979, y: 2.4999988, z: 2.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3878215685221989243}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8182547166055524504
 GameObject:
   m_ObjectHideFlags: 0
@@ -100,7 +132,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1869056516318208796}
-  - component: {fileID: 4814277388202792387}
   m_Layer: 0
   m_Name: Greatsword_Held
   m_TagString: Untagged
@@ -124,20 +155,3 @@ Transform:
   - {fileID: 3878215685221989243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4814277388202792387
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8182547166055524504}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
-  sceneId: 0
-  _assetId: 3950247443
-  serverOnly: 0
-  visibility: 0
-  hasSpawned: 0

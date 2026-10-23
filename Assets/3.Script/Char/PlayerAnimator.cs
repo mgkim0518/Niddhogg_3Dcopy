@@ -12,6 +12,11 @@ public class PlayerAnimator : NetworkBehaviour
     [SerializeField] float comboResetTime = 0.4f;
     const int UpperBodyLayer = 1;
 
+    [Header("대검 왼손 IK")]
+    [SerializeField] Transform leftHandIK;        // Montante/LeftHandIK
+    [SerializeField] Transform leftHandIKFront;   // Montante/LeftHandIK_Front
+    [SerializeField] float gripBlendSpeed = 8f;
+
     static readonly int MoveXHash = Animator.StringToHash("MoveX");
     static readonly int MoveZHash = Animator.StringToHash("MoveZ");
     static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -30,13 +35,17 @@ public class PlayerAnimator : NetworkBehaviour
     static readonly int PickShieldHash = Animator.StringToHash("PickShield");
 
     private Health health;
+    private PlayerCombat combat;
+
     private bool nextRight;
     private float lastPunchTime;
+    private float frontBlend;
 
     void Awake()
     {
         health = GetComponent<Health>();
         animator = GetComponent<Animator>();
+        combat = GetComponent<PlayerCombat>();
     }
 
     public override void OnStartClient()
@@ -99,9 +108,40 @@ public class PlayerAnimator : NetworkBehaviour
         netAnimator.SetTrigger(isShield ? PickShieldHash : PickWeaponHash);
     }
 
+    void OnAnimatorIK(int layerIndex)
+    {
+        bool use = combat.held == HeldWeapon.GreatSword && !health.isDead && leftHandIK != null;
+        float w = use ? 1f : 0f;
+        animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, w);
+        animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, w);
+        if (!use) return;
+
+        // ----앞쪽 손잡이로 옮기기(테스트용으로 꺼 둠) ----
+        // bool front = animator.GetCurrentAnimatorStateInfo(UpperBodyLayer).IsTag("FrontGrip")
+        //           || (animator.IsInTransition(UpperBodyLayer)
+        //               && animator.GetNextAnimatorStateInfo(UpperBodyLayer).IsTag("FrontGrip"));
+        // frontBlend = Mathf.MoveTowards(frontBlend, front ? 1f : 0f, gripBlendSpeed * Time.deltaTime);
+        //
+        // Transform b = leftHandIKFront != null ? leftHandIKFront : leftHandIK;
+        // Vector3 pos = Vector3.Lerp(leftHandIK.position, b.position, frontBlend);
+        // Quaternion rot = Quaternion.Slerp(leftHandIK.rotation, b.rotation, frontBlend);
+
+        Vector3 pos = leftHandIK.position;       // 테스트: 항상 평소 위치
+        Quaternion rot = leftHandIK.rotation;
+
+        animator.SetIKPosition(AvatarIKGoal.LeftHand, pos);
+        animator.SetIKRotation(AvatarIKGoal.LeftHand, rot);
+    }
+
     void SetDead(bool dead)
     {
         animator.SetBool(DeadHash, dead);
         animator.SetLayerWeight(UpperBodyLayer, dead ? 0f : 1f);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (leftHandIK) { Gizmos.color = Color.green; Gizmos.DrawWireSphere(leftHandIK.position, 0.03f); }
+        //if (leftHandIKFront) { Gizmos.color = Color.red; Gizmos.DrawWireSphere(leftHandIKFront.position, 0.03f); }
     }
 }

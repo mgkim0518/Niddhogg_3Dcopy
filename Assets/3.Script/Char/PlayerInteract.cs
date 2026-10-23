@@ -2,9 +2,6 @@ using System;
 using UnityEngine;
 using Mirror;
 
-// Player 프리팹에 붙인다. 크로스라인으로 버튼을 보고 E를 누르면 서버에 요청한다.
-// 씬 오브젝트(Gate)에는 클라이언트 권한이 없으므로 Command는 플레이어 쪽에 둔다.
-// 금요일 아이템 줍기도 같은 레이캐스트에 붙이면 된다.
 [RequireComponent(typeof(Health))]
 public class PlayerInteract : NetworkBehaviour
 {
@@ -13,16 +10,21 @@ public class PlayerInteract : NetworkBehaviour
     [SerializeField] float serverRangeSlack = 1f;
     [SerializeField] float eyeHeight = 1.67f;
 
-    // 오류창 UI(금요일)가 구독할 이벤트. 로컬 플레이어에서만 발생
     public static event Action<string> OnInteractMessage;
 
-    PlayerInputManager input;
-    Transform cam;
-    Health health;
+    private PlayerInputManager input;
+    private Transform cam;
+    private Health health;
+    private PlayerInventory inventory;
 
     void Awake()
     {
         health = GetComponent<Health>();
+    }
+
+    public static void ShowMessage(string message)
+    {
+        OnInteractMessage?.Invoke(message);
     }
 
     public override void OnStartLocalPlayer()
@@ -33,7 +35,10 @@ public class PlayerInteract : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer || input == null) return;
+        if (!isLocalPlayer || input == null)
+        {
+            return;
+        }
         if (health.isDead || PlayerCombat.isInputBlocked) return;
         if (!input.isInteract) return;
 
@@ -42,6 +47,13 @@ public class PlayerInteract : NetworkBehaviour
         if (!Physics.Raycast(cam.position, cam.forward, out RaycastHit hit,
                 interactRange, interactMask, QueryTriggerInteraction.Collide))
             return;
+
+        WorldItem item = hit.collider.GetComponentInParent<WorldItem>();
+        if (item != null)
+        {
+            if (inventory != null) inventory.RequestPickUp(item);
+            return;
+        }
 
         GateButton button = hit.collider.GetComponentInParent<GateButton>();
         if (button == null || button.Gate == null) return;   

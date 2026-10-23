@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,8 +12,9 @@ public class Health : NetworkBehaviour, IDamagable
     [SyncVar] public Team team;
 
     public int HP => hp;
-    public event Action<DamageInfo> OnDied;   // 서버에서만 발생
-    public event Action<bool> OnDeadChanged;     // 모든 클라이언트(호스트 포함)에서 발생
+    public event Action<DamageInfo> OnDied;   
+    public event Action<bool> OnDeadChanged;
+    public event Action OnRevived;
 
     [Server]
     public void TakeDamage(DamageInfo info)
@@ -38,7 +39,8 @@ public class Health : NetworkBehaviour, IDamagable
     [Server] public void ResetHp() 
     {
         hp = DamageTable.PlayerMaxHp;
-        isDead = false; 
+        isDead = false;
+        OnRevived?.Invoke();
     }
 
     private bool isBlock(DamageInfo info) 

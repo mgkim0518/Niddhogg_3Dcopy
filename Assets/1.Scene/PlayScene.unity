@@ -470,6 +470,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 2935062404
       objectReference: {fileID: 0}
+    - target: {fileID: 8454217608853216025, guid: abbaa3acd6c5c8542bf85e2cfae09382, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8740817990674548350, guid: abbaa3acd6c5c8542bf85e2cfae09382, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -960,51 +968,55 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 8182547166055524504, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
+      propertyPath: m_Name
+      value: Greatsword
+      objectReference: {fileID: 0}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.12
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.07354252
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalPosition.z
       value: 59.94
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1869056516318208796, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4814277388202792387, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 4814277388202792387, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: sceneId
-      value: 4264670795
+      value: 2019961025
       objectReference: {fileID: 0}
-    - target: {fileID: 8182547166055524504, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+    - target: {fileID: 8182547166055524504, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_Name
       value: Greatsword
       objectReference: {fileID: 0}
@@ -1012,7 +1024,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 14d2af52696dae348bdce5bfa7e470ee, type: 3}
+  m_SourcePrefab: {fileID: 100100000, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
 --- !u!1001 &7417772107428100242
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1150,9 +1162,17 @@ PrefabInstance:
       propertyPath: openDuration
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 8454217608853216025, guid: abbaa3acd6c5c8542bf85e2cfae09382, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8650837878655186359, guid: abbaa3acd6c5c8542bf85e2cfae09382, type: 3}
       propertyPath: m_Name
       value: Core_Blue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8740817990674548350, guid: abbaa3acd6c5c8542bf85e2cfae09382, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

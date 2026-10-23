@@ -6,7 +6,6 @@ public class Core : NetworkBehaviour, IDamagable
 {
     [SerializeField] Team team = Team.None;
     [SerializeField] float alertInterval = 3f;
-    [Range(0f, 1f)] [SerializeField] float damagedDarken = 0.6f;
 
     private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");   // URP Lit
     private static readonly int ColorId = Shader.PropertyToID("_Color");           // Built-in Standard
@@ -39,15 +38,12 @@ public class Core : NetworkBehaviour, IDamagable
         crystalRenderers = GetComponentsInChildren<MeshRenderer>(true);
     }
 
-    void ApplyColor(int currentHp)
+    void ApplyColor()
     {
         if (crystalRenderers == null || team == Team.None) return;
         block ??= new MaterialPropertyBlock();
 
-        float ratio = (float)currentHp / DamageTable.CoreMaxHp;
-        Color baseColor = TeamColors.Of(team);
-        Color c = Color.Lerp(baseColor * (1f - damagedDarken), baseColor, ratio);
-        c.a = 1f;
+        Color c = TeamColors.Of(team);
 
         foreach (Renderer r in crystalRenderers)
         {
@@ -64,12 +60,12 @@ public class Core : NetworkBehaviour, IDamagable
         PlayerRespawn.MatchOver = false;
         winner = Team.None;
         hp = DamageTable.CoreMaxHp;
-        ApplyColor(hp);
+        ApplyColor();
     }
 
     public override void OnStartClient()
     {
-        ApplyColor(hp);
+        ApplyColor();
         if (!isServer)
         {
             PlayerRespawn.MatchOver = false;
@@ -81,7 +77,7 @@ public class Core : NetworkBehaviour, IDamagable
     public void TakeDamage(DamageInfo info)
     {
         if (PlayerRespawn.MatchOver || hp <= 0) return;
-        if (info.attackerTeam == team) return;   // 자기 코어는 못 친다
+        if (info.attackerTeam == team) return;   
 
         hp = Mathf.Max(0, hp - DamageTable.DamageValue(info.type));
 
