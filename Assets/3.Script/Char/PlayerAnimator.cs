@@ -14,8 +14,6 @@ public class PlayerAnimator : NetworkBehaviour
 
     [Header("대검 왼손 IK")]
     [SerializeField] Transform leftHandIK;        // Montante/LeftHandIK
-    [SerializeField] Transform leftHandIKFront;   // Montante/LeftHandIK_Front
-    [SerializeField] float gripBlendSpeed = 8f;
 
     static readonly int MoveXHash = Animator.StringToHash("MoveX");
     static readonly int MoveZHash = Animator.StringToHash("MoveZ");
@@ -39,7 +37,6 @@ public class PlayerAnimator : NetworkBehaviour
 
     private bool nextRight;
     private float lastPunchTime;
-    private float frontBlend;
 
     void Awake()
     {
@@ -57,6 +54,14 @@ public class PlayerAnimator : NetworkBehaviour
     public override void OnStopClient()
     {
         health.OnDeadChanged -= SetDead;
+    }
+
+    void Update()
+    {
+        if (!isOwned || combat == null) return;
+        int w = (int)combat.held;
+        if (animator.GetInteger(WeaponHash) != w)
+            animator.SetInteger(WeaponHash, w);
     }
 
     public void SetMove(Vector3 blend, float animSpeed, bool grounded, bool falling)
@@ -116,17 +121,7 @@ public class PlayerAnimator : NetworkBehaviour
         animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, w);
         if (!use) return;
 
-        // ----앞쪽 손잡이로 옮기기(테스트용으로 꺼 둠) ----
-        // bool front = animator.GetCurrentAnimatorStateInfo(UpperBodyLayer).IsTag("FrontGrip")
-        //           || (animator.IsInTransition(UpperBodyLayer)
-        //               && animator.GetNextAnimatorStateInfo(UpperBodyLayer).IsTag("FrontGrip"));
-        // frontBlend = Mathf.MoveTowards(frontBlend, front ? 1f : 0f, gripBlendSpeed * Time.deltaTime);
-        //
-        // Transform b = leftHandIKFront != null ? leftHandIKFront : leftHandIK;
-        // Vector3 pos = Vector3.Lerp(leftHandIK.position, b.position, frontBlend);
-        // Quaternion rot = Quaternion.Slerp(leftHandIK.rotation, b.rotation, frontBlend);
-
-        Vector3 pos = leftHandIK.position;       // 테스트: 항상 평소 위치
+        Vector3 pos = leftHandIK.position;       
         Quaternion rot = leftHandIK.rotation;
 
         animator.SetIKPosition(AvatarIKGoal.LeftHand, pos);
@@ -142,6 +137,5 @@ public class PlayerAnimator : NetworkBehaviour
     void OnDrawGizmos()
     {
         if (leftHandIK) { Gizmos.color = Color.green; Gizmos.DrawWireSphere(leftHandIK.position, 0.03f); }
-        //if (leftHandIKFront) { Gizmos.color = Color.red; Gizmos.DrawWireSphere(leftHandIKFront.position, 0.03f); }
     }
 }

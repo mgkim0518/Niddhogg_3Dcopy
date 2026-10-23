@@ -576,7 +576,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 1
   spawnPrefabs:
-  - {fileID: 0}
+  - {fileID: 1343763944708360, guid: 65d3341e176ef764db554534b041d47b, type: 3}
   exceptionsDisconnect: 1
   snapshotSettings:
     bufferTimeMultiplier: 2
@@ -968,10 +968,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 8182547166055524504, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
-      propertyPath: m_Name
-      value: Greatsword
-      objectReference: {fileID: 0}
     - target: {fileID: 1869056516318208796, guid: d0b6a5b665bf9a64480793f6012fda45, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.12

@@ -42,17 +42,15 @@ public class PlayerInventory : NetworkBehaviour
     {
         health.OnDied -= OnDiedServer;
         health.OnRevived -= OnRevivedServer;
-        DropAll();   // 접속이 끊겨도 특수 아이템이 사라지지 않게
+        DropAll(); 
     }
 
-    // ---------- 클라이언트 → 서버 ----------
 
-    // PlayerInteract가 로컬 플레이어에서 부른다
     public void RequestPickUp(WorldItem item)
     {
         if (!isLocalPlayer || item == null) return;
 
-        string reason = CheckPickUp(item.kind, combat.held, combat.isHavingShield);
+        string reason = CheckPickUp(item.kind, combat.held);
         if (reason != null)
         {
             PlayerInteract.ShowMessage(reason);
@@ -62,20 +60,11 @@ public class PlayerInventory : NetworkBehaviour
         if (id != null) CmdPickUp(id);
     }
 
-    // 주울 수 없는 경우만 이유를 돌려준다. 교체(떨어뜨리고 줍기)는 허용
-    static string CheckPickUp(ItemKind kind, HeldWeapon held, bool hasShield)
+    static string CheckPickUp(ItemKind kind, HeldWeapon held)
     {
-        switch (kind)
+        if (kind == ItemKind.Sword && held == HeldWeapon.Sword)
         {
-            case ItemKind.Sword:
-                if (held == HeldWeapon.Sword) return "이미 검을 들고 있습니다";
-                break;
-            case ItemKind.GreatSword:
-                if (held == HeldWeapon.GreatSword) return "이미 대검을 들고 있습니다";
-                break;
-            case ItemKind.Shield:
-                if (hasShield) return "이미 방패를 들고 있습니다";
-                break;
+            return "이미 검을 들고 있습니다";
         }
         return null;
     }
@@ -88,11 +77,11 @@ public class PlayerInventory : NetworkBehaviour
         WorldItem item = target.GetComponent<WorldItem>();
         if (item == null) return;
 
-        // 클라이언트를 믿지 않고 서버에서 거리를 다시 잰다
-        float maxDist = pickupRange + serverRangeSlack + 1f;   // 발 위치 기준이라 여유를 더 준다
+        
+        float maxDist = pickupRange + serverRangeSlack + 1f;
         if ((target.transform.position - transform.position).sqrMagnitude > maxDist * maxDist) return;
 
-        if (CheckPickUp(item.kind, combat.held, combat.isHavingShield) != null) return;
+        if (CheckPickUp(item.kind, combat.held) != null) return;
 
         bool ok = item.kind switch
         {
@@ -108,20 +97,16 @@ public class PlayerInventory : NetworkBehaviour
     [TargetRpc]
     void TargetPickedUp(NetworkConnectionToClient target, bool isShield)
     {
-        // NetworkAnimator가 클라이언트 권한이라 트리거는 로컬 플레이어가 보낸다
         if (anim != null) anim.PlayPickup(isShield);
     }
-
-    // ---------- 서버: 줍기 ----------
 
     [Server]
     bool PickUpSword(GameObject swordObj)
     {
         if (WorldSwordManager.Instance == null) return false;
 
-        if (!WorldSwordManager.Instance.TryPickUp(swordObj)) return false;   // 그 사이 누가 먼저 주웠다
+        if (!WorldSwordManager.Instance.TryPickUp(swordObj)) return false; 
 
-        // 대검을 들고 있었다면 내려놓는다 (검과 대검은 같이 못 든다). 방패는 그대로
         if (combat.held == HeldWeapon.GreatSword) DropSpecial();
         combat.held = HeldWeapon.Sword;
         return true;
@@ -131,22 +116,20 @@ public class PlayerInventory : NetworkBehaviour
     bool PickUpSpecial(SpecialItem special, ItemKind kind)
     {
         if (special == null) return false;
-        if (!special.TryPickUp()) return false;   // 이미 누가 들고 있다
+        if (!special.TryPickUp()) return false;  
 
         if (kind == ItemKind.GreatSword)
         {
-            // 양손 무기: 검과 방패를 모두 내려놓는다
             if (combat.held == HeldWeapon.Sword) DropSword();
             if (combat.isHavingShield) DropSpecial();
             combat.held = HeldWeapon.GreatSword;
         }
         else // Shield
         {
-            // 대검과는 같이 못 든다. 검과는 같이 든다
             if (combat.held == HeldWeapon.GreatSword)
             {
                 DropSpecial();
-                combat.held = HeldWeapon.None;   // 맨손 + 방패
+                combat.held = HeldWeapon.None;   
             }
             combat.isHavingShield = true;
         }
@@ -154,8 +137,6 @@ public class PlayerInventory : NetworkBehaviour
         carriedSpecial = special;
         return true;
     }
-
-    // ---------- 서버: 떨어뜨리기 ----------
 
     Vector3 DropPos(float sideOffset = 0f) =>
         transform.position + Vector3.up * dropHeight + transform.right * sideOffset;
@@ -169,7 +150,6 @@ public class PlayerInventory : NetworkBehaviour
             WorldSwordManager.Instance.SpawnSword(DropPos(0.4f), transform.rotation);
     }
 
-    // 들고 있는 대검이나 방패를 내려놓는다 (10초 뒤 SpecialItem이 원위치로 돌려보낸다)
     [Server]
     void DropSpecial()
     {
@@ -198,11 +178,8 @@ public class PlayerInventory : NetworkBehaviour
         combat.held = HeldWeapon.Sword;
     }
 
-    // ---------- 모든 클라이언트: 손에 든 모델 ----------
-
     void LateUpdate()
     {
-        // SyncVar 값을 보고 바뀌었을 때만 모델을 갱신한다 (늦게 접속해도 맞춰진다)
         bool alive = !health.isDead;
         HeldWeapon held = alive ? combat.held : HeldWeapon.None;
         bool shield = alive && combat.isHavingShield;
@@ -213,5 +190,21 @@ public class PlayerInventory : NetworkBehaviour
         if (swordModel) swordModel.SetActive(held == HeldWeapon.Sword);
         if (greatSwordModel) greatSwordModel.SetActive(held == HeldWeapon.GreatSword);
         if (shieldModel) shieldModel.SetActive(shield);
+    }
+
+    //---테스트용 (제출 전에 삭제 필요)----
+
+    [ContextMenu("Test/대검 들기")]
+    void TestGiveGreatSword()
+    {
+        if (!isServer) return;
+        combat.held = HeldWeapon.GreatSword;   
+    }
+
+    [ContextMenu("Test/칼 들기")]
+    void TestGiveSword()
+    {
+        if (!isServer) return;
+        combat.held = HeldWeapon.Sword;
     }
 }
