@@ -55,9 +55,14 @@ public class Health : NetworkBehaviour, IDamagable
     }
 
     private bool isBlock(DamageInfo info) 
-    { 
-        /* 방패 들고 Q 누르는 중 + 정면 각도면 true */ 
-        return false; 
+    {
+        if (combat == null || !combat.isBlocking) return false;
+
+        Vector3 facing = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
+        Vector3 incoming = Vector3.ProjectOnPlane(-info.hitDirection, Vector3.up).normalized;
+        if (incoming.sqrMagnitude < 0.0001f) return false;   
+
+        return Vector3.Angle(facing, incoming) <= blockAngle * 0.5f;
     }
 
     private void OnHpChanged(int oldV, int newV) 
@@ -73,17 +78,5 @@ public class Health : NetworkBehaviour, IDamagable
     {
         Debug.Log($"[{(isServer ? "서버" : "클라")}] {name} isDead: {o} → {n}");
         OnDeadChanged?.Invoke(n);
-    }
-
-    private bool Block(DamageInfo info)
-    {
-        if (combat == null || !combat.isBlocking) return false;
-
-        // 높낮이는 무시하고 수평 방향만 비교
-        Vector3 facing = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
-        Vector3 incoming = Vector3.ProjectOnPlane(-info.hitDirection, Vector3.up).normalized;
-        if (incoming.sqrMagnitude < 0.0001f) return false;   // 바로 위나 아래에서 온 공격
-
-        return Vector3.Angle(facing, incoming) <= blockAngle * 0.5f;
     }
 }

@@ -52,6 +52,9 @@ public class PlayerInputManager : MonoBehaviour
     public bool isThrow => throwAction.WasPressedThisFrame();
     public bool isInteract => interactAction.WasPressedThisFrame();
 
+    //테스트용 코드
+    public bool isBlockPressed => blockAction.WasPressedThisFrame();
+
     public void SetGameplayEnabled(bool enabled)
     {
         InputActionMap map = input_l.actions.FindActionMap(gameplayMap, true);
