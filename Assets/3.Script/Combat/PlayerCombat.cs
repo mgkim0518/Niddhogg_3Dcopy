@@ -36,6 +36,7 @@ public class PlayerCombat : NetworkBehaviour
     [SyncVar] public bool isBlocking;
 
     public static bool isInputBlocked;
+    public float CurrentRange => Range();
 
     private PlayerInputManager input;
     private Transform cam;

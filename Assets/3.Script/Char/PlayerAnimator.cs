@@ -116,7 +116,7 @@ public class PlayerAnimator : NetworkBehaviour
 
     public void SetBlock(bool on)
     {
-        animator.SetBool(BlockHash, on);   // 주인 쪽에서 설정하면 NetworkAnimator가 상대에게 전달
+        animator.SetBool(BlockHash, on);  
     }
 
     void OnAnimatorIK(int layerIndex)
