@@ -47,6 +47,9 @@ public class PlayerCombat : NetworkBehaviour
     private readonly Collider[] overlapBuffer = new Collider[16];
     private readonly HashSet<IDamagable> hitThisSwing = new HashSet<IDamagable>();
 
+    //디버그용
+    private bool toggledBlock;
+
     void Awake()
     {
         health = GetComponent<Health>();
@@ -98,10 +101,24 @@ public class PlayerCombat : NetworkBehaviour
             }
         }
 
-        bool isCanBlock = isCanAct && isHavingShield && input.isBlocking;
+        bool blockInput;
+        if (debugToggleBlock)
+        {
+            if (input.isBlockPressed) toggledBlock = !toggledBlock;
+            blockInput = toggledBlock;
+        }
+        else
+        {
+            blockInput = input.isBlocking;
+        }
+
+        bool isCanBlock = isCanAct && isHavingShield && blockInput;
+        //bool isCanBlock = isCanAct && isHavingShield && input.isBlocking;
+
         if (isCanBlock != lastSentBlock)
         {
             lastSentBlock = isCanBlock;
+            anim.SetBlock(isCanBlock);
             CmdSetBlocking(isCanBlock);
         }
     }

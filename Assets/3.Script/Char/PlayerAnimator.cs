@@ -31,6 +31,7 @@ public class PlayerAnimator : NetworkBehaviour
     static readonly int PunchRHash = Animator.StringToHash("Punch_R");
     static readonly int PickWeaponHash = Animator.StringToHash("PickWeapon");
     static readonly int PickShieldHash = Animator.StringToHash("PickShield");
+    static readonly int BlockHash = Animator.StringToHash("Block");
 
     private Health health;
     private PlayerCombat combat;
@@ -111,6 +112,11 @@ public class PlayerAnimator : NetworkBehaviour
     public void PlayPickup(bool isShield)
     {
         netAnimator.SetTrigger(isShield ? PickShieldHash : PickWeaponHash);
+    }
+
+    public void SetBlock(bool on)
+    {
+        animator.SetBool(BlockHash, on);   // 주인 쪽에서 설정하면 NetworkAnimator가 상대에게 전달
     }
 
     void OnAnimatorIK(int layerIndex)
