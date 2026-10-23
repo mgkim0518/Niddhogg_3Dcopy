@@ -47,7 +47,7 @@ public struct DamageInfo
 public class DamageTable
 {
     public const int PlayerMaxHp = 5;
-    public const int CoreMaxHp = 10;
+    public const int CoreMaxHp = 100;
 
     public static int DamageValue(DamageType t) => t switch
     {
