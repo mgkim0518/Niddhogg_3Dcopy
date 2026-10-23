@@ -29,7 +29,6 @@ public class PlayerCombat : NetworkBehaviour
     [Header("디버그")]
     [SerializeField] bool drawDebugRays = true;
     [Tooltip("테스트용: Q를 한 번 누르면 막기 유지, 다시 누르면 해제")]
-    [SerializeField] bool debugToggleBlock = false;
 
     [SyncVar(hook = nameof(OnHeldChanged))] public HeldWeapon held = HeldWeapon.Sword;
     [SyncVar] public bool isHavingShield;
@@ -102,19 +101,12 @@ public class PlayerCombat : NetworkBehaviour
             }
         }
 
-        bool blockInput;
-        if (debugToggleBlock)
-        {
-            if (input.isBlockPressed) toggledBlock = !toggledBlock;
-            blockInput = toggledBlock;
-        }
-        else
-        {
-            blockInput = input.isBlocking;
-        }
+        bool isCanBlock = isCanAct && isHavingShield && input.isBlocking;
 
-        bool isCanBlock = isCanAct && isHavingShield && blockInput;
-        //bool isCanBlock = isCanAct && isHavingShield && input.isBlocking;
+        if (isCanAct && input.isBlockPressed && !isHavingShield)
+        {
+            PlayerInteract.ShowMessage("방패가 없습니다");
+        }
 
         if (isCanBlock != lastSentBlock)
         {
