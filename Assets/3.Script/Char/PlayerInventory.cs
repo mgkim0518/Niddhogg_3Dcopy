@@ -71,6 +71,11 @@ public class PlayerInventory : NetworkBehaviour
         DropAll(); 
     }
 
+    public override void OnStartLocalPlayer()
+    {
+        cam = Camera.main.transform;
+        input = FindFirstObjectByType<PlayerInputManager>();
+    }
 
     public void RequestPickUp(WorldItem item)
     {
