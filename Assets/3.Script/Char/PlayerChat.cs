@@ -10,7 +10,7 @@ public struct SystemChatMessage : NetworkMessage
 
 public class PlayerChat : NetworkBehaviour
 {
-    public const int MaxLength = 60;
+    public const int MaxLength = 80;
     const float Cooldown = 0.5f;
 
     public static PlayerChat Local;                         

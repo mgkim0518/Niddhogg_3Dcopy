@@ -42,6 +42,7 @@ public class PlayerRespawn : NetworkBehaviour
     [Server]
     void HandleDied(DamageInfo info)
     {
+        if (!isClient && controller) controller.enabled = false;
         StartCoroutine(RespawnRoutine());
     }
 
@@ -64,6 +65,7 @@ public class PlayerRespawn : NetworkBehaviour
 
         health.invincible = true;
         health.ResetHp();
+        if (!isClient && controller) controller.enabled = true;
 
         yield return new WaitForSeconds(invincibleDuration);
         health.invincible = false;
