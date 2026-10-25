@@ -407,6 +407,7 @@ GameObject:
   - component: {fileID: 4090427183026553262}
   - component: {fileID: 4007394008109398797}
   - component: {fileID: 5998053934669861326}
+  - component: {fileID: 4306101870359376592}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -637,7 +638,6 @@ MonoBehaviour:
   thrustCooldown: 0.5
   slashCooldown: 0.7
   drawDebugRays: 1
-  debugToggleBlock: 1
   held: 1
   isHavingShield: 0
   isBlocking: 0
@@ -746,6 +746,22 @@ MonoBehaviour:
   dropHeight: 0.02
   pickupRange: 2
   serverRangeSlack: 1
+--- !u!114 &4306101870359376592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1627640176267713586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0917bf1b8deae548b490ce2b3ecb77f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerChat
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  isHostPlayer: 0
 --- !u!1 &1651462801253272423
 GameObject:
   m_ObjectHideFlags: 0
