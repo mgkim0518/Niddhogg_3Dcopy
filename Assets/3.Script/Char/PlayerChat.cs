@@ -16,10 +16,11 @@ public class PlayerChat : NetworkBehaviour
 
     public static PlayerChat Local;                         
     public static event Action<Team, string> OnChatMessage; 
-    public static event Action<string> OnSystemMessage;
+    public static event Action<string> OnSystemMessage;     
 
     public const int MaxNameLength = 12;
-    // 닉네임이 생기면 여기만 바꾸면 된다
+
+    // 팀 → 플레이어 이름. 채팅, 나감 알림, 승리 표시가 모두 NameOf를 거치므로 여기만 바꾸면 된다
     static readonly Dictionary<Team, string> names = new Dictionary<Team, string>();
 
     public static string NameOf(Team team)
@@ -44,6 +45,7 @@ public class PlayerChat : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        // 접속 시점에 이미 이름이 있으면 바로 등록 (훅이 초기값에 안 불릴 수도 있으므로)
         if (!string.IsNullOrEmpty(playerName)) names[health.team] = playerName;
 
         if (isOwned) return;   
@@ -62,8 +64,8 @@ public class PlayerChat : NetworkBehaviour
 
     public override void OnStartLocalPlayer()
     {
-        CmdSetName(ConnectionUI.LocalName);
         Local = this;
+        CmdSetName(ConnectionUI.LocalName);   // 접속 패널에서 입력한 이름을 서버로
     }
 
     [Command]
@@ -71,6 +73,8 @@ public class PlayerChat : NetworkBehaviour
     {
         name = CleanName(name);
         playerName = name.Length > 0 ? name : (health.team == Team.Red ? "레드" : "블루");
+        // SyncVar 훅은 클라이언트(호스트 포함)에서만 불린다. 데디케이티드 서버의 나감/재시작 알림에도 이름이 나오도록 직접 등록
+        names[health.team] = playerName;
     }
 
     void OnNameChanged(string oldName, string newName)
