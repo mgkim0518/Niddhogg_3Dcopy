@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using Mirror;
 
 public class CoreAlertUI : MonoBehaviour
 {
-    [SerializeField] Text text;    // Legacy Text면 Text
+    [SerializeField] Text text; 
     [SerializeField] string message = "코어가 공격받고 있습니다!";
     [Tooltip("Core의 alertInterval(3초)보다 길어야 공격이 이어지는 동안 끊기지 않는다")]
     [SerializeField] float showTime = 3.5f;
@@ -38,7 +39,7 @@ public class CoreAlertUI : MonoBehaviour
     void HandleCoreAttacked(Team attacked)
     {
         if (PlayerRespawn.MatchOver) return;
-        if (attacked != MyTeam()) return;   // 상대 코어를 칠 때는 띄우지 않는다
+        if (attacked != MyTeam()) return;   
 
         hideAt = Time.time + showTime;
     }
@@ -65,7 +66,6 @@ public class CoreAlertUI : MonoBehaviour
             return;
         }
 
-        // 떠 있는 동안 깜빡여서 눈에 띄게 하고, 끝날 때는 서서히 사라진다
         float blink = 0.65f + 0.35f * Mathf.Abs(Mathf.Sin(Time.time * blinkSpeed));
         float fade = left > 0f ? 1f : 1f + left / fadeTime;
         group.alpha = blink * fade;
