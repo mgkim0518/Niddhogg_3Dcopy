@@ -118,24 +118,4 @@ public class Core : NetworkBehaviour, IDamagable
         Debug.Log($"[경기 종료] {winTeam} 승리");
         OnMatchEnded?.Invoke(winTeam);
     }
-
-    // 금요일에 UI가 생기기 전까지 쓰는 임시 표시. UI를 붙이면 지운다
-    void OnGUI()
-    {
-        if (winner == Team.None || team != Opponent(winner)) return;   
-        Team myTeam = Team.None;
-        if (NetworkClient.localPlayer != null)
-            myTeam = NetworkClient.localPlayer.GetComponent<Health>().team;
-
-        bool iWon = myTeam == winner;
-        string text = myTeam == Team.None ? $"{winner} 승리" : (iWon ? "승리!" : "패배");
-
-        GUIStyle style = new GUIStyle(GUI.skin.label) { fontSize = 48, alignment = TextAnchor.MiddleCenter };
-        style.normal.textColor = iWon ? new Color(0.95f, 0.8f, 0.3f) : new Color(0.7f, 0.7f, 0.7f);
-        GUI.Label(new Rect(0, Screen.height * 0.35f, Screen.width, 80), text, style);
-
-        GUIStyle sub = new GUIStyle(style) { fontSize = 24 };
-        sub.normal.textColor = TeamColors.Of(winner);
-        GUI.Label(new Rect(0, Screen.height * 0.35f + 70, Screen.width, 40), $"{winner} 팀 승리", sub);
-    }
 }
