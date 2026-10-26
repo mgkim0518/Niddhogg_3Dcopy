@@ -206,7 +206,7 @@ public class ChatUI : MonoBehaviour
         PlayerCombat.isInputBlocked = blocked;
 
         if (playerInput == null) playerInput = FindFirstObjectByType<PlayerInputManager>();
-        if (playerInput != null && !PlayerRespawn.MatchOver)
+        if (playerInput != null && !PlayerRespawn.MatchOver && MatchFlow.IsPlaying)
             playerInput.SetGameplayEnabled(!blocked);
     }
 

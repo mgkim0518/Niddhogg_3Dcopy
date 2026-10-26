@@ -32,7 +32,7 @@ public class CustomNetworkManager: NetworkManager
 
     void OnRestartRequest(NetworkConnectionToClient conn, RestartRequestMessage msg)
     {
-        if (!PlayerRespawn.MatchOver) return;   // 경기 중에는 무시
+        if (!PlayerRespawn.MatchOver) return; 
 
         if (conn is LocalConnectionToClient)
         {
@@ -40,9 +40,9 @@ public class CustomNetworkManager: NetworkManager
             return;
         }
 
-        if (mode != NetworkManagerMode.ServerOnly) return;   // 호스트 모드에서 클라이언트는 결정권 없음
+        if (mode != NetworkManagerMode.ServerOnly) return;   
 
-        if (!restartVotes.Add(conn.connectionId)) return;    // 이미 누름
+        if (!restartVotes.Add(conn.connectionId)) return;    
 
         if (conn.identity != null)
         {
@@ -71,7 +71,8 @@ public class CustomNetworkManager: NetworkManager
             if (c.identity != null && c.identity.GetComponent<Health>().team == Team.Blue)
                 team = Team.Red;
 
-        Transform start = RespawnPoint.For(team);
+        Transform start = StartPoint.For(team);
+        if (start == null) start = RespawnPoint.For(team);
         Vector3 pos = start != null ? start.position : Vector3.zero;
         Quaternion rot = start != null ? start.rotation : Quaternion.identity;
         if (start == null) Debug.LogError($"{team} 팀 RespawnPoint가 씬에 없습니다.");

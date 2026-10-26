@@ -42,9 +42,16 @@ public class PlayerController : NetworkBehaviour
     {
         playerinput = FindAnyObjectByType<PlayerInputManager>();
         playerinput.Target = this;
-        Transform cam = Camera.main.transform;
-        cam.SetParent(cameraPivot, false);
-        cam.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        if (LobbyDirector.Instance != null)
+        {
+            LobbyDirector.Instance.Setup(GetComponent<Health>().team, cameraPivot, playerinput);
+        }
+        else
+        {
+            Transform cam = Camera.main.transform;
+            cam.SetParent(cameraPivot, false);
+            cam.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        }
     }
 
     public override void OnStopLocalPlayer()
