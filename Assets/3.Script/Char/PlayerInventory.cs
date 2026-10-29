@@ -68,7 +68,10 @@ public class PlayerInventory : NetworkBehaviour
     {
         health.OnDied -= OnDiedServer;
         health.OnRevived -= OnRevivedServer;
-        DropAll(); 
+        if (!NetworkServer.isLoadingScene)
+        {
+            DropAll(); 
+        }
     }
 
     public override void OnStartLocalPlayer()
